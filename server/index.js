@@ -13,10 +13,7 @@ export const rzp = new razorpay({
 });
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,  // <- REQUIRED for cookies/auth headers
-}));
+app.use(cors({credentials: true}));
 
 const port = process.env.PORT || 5000;
 app.get("/", (req, res) => {
