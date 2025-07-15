@@ -31,7 +31,7 @@ const Account = ({ user }) => {
 
                     </p>
 
-                    <button className="common-btn">
+                    <button className="common-btn" onClick={()=>navigate(`/${user._id}/dashboard`)}>
                         <RiDashboardHorizontalFill />
                         Dashboard
                     </button>

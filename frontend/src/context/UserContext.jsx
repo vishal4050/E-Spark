@@ -12,7 +12,7 @@ export const UserContextProvider = ({ children }) => {
 
     const server = "http://localhost:5000"; // or use import.meta.env.VITE_SERVER_URL
 
-    async function loginUser({ email, password, navigate }) {
+    async function loginUser({ email, password, navigate,fetchMyCourse }) {
         setBtnLoading(true);
         toast.dismiss();
 
@@ -30,6 +30,7 @@ export const UserContextProvider = ({ children }) => {
             setUser(data.user);
             setIsAuth(true);
             navigate("/");
+            fetchMyCourse();
         } catch (error) {
             console.error("Login error:", error);
             setIsAuth(false);

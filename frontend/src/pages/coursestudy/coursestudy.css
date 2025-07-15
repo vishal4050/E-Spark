@@ -1,0 +1,52 @@
+/* coursestudy.css */
+
+.course-study-page {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.course-study-page img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.course-study-page h2 {
+  font-size: 28px;
+  margin: 12px 0;
+  color: #1a1a1a;
+}
+
+.course-study-page h4 {
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.course-study-page h5 {
+  font-size: 16px;
+  color: #666;
+  margin: 4px 0;
+}
+
+.course-study-page a {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 10px 20px;
+  background-color: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.course-study-page a:hover {
+  background-color: #1e40af;
+}

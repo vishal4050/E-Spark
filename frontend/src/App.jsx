@@ -15,6 +15,9 @@ import { UserData } from "./context/UserContext.jsx";
 import Courses from "./pages/courses/courses.jsx";
 import CourseDescription from "./pages/coursedescription/CourseDescription.jsx";
 import PaymentSuccess from "./pages/paymentsuccess/PaymentSuccess.jsx";
+import Dashboard from "./pages/dashboard/Dashboard.jsx";
+import CourseStudy from "./pages/coursestudy/CourseStudy.jsx";
+import Lecture from "./pages/lectures/Lecture.jsx";
 const App = () => {
   const { isAuth, user, loading } = UserData();
 
@@ -34,6 +37,9 @@ const App = () => {
         <Route path="/account" element={isAuth ? <Account user={user} /> : <Login />} />
         <Route path="/course/:id" element={isAuth?<CourseDescription />:<Login/>}/>
         <Route path="/payment-success/:id" element={isAuth?<PaymentSuccess user={user}/>:<Login/>}/>
+        <Route path="/:id/dashboard" element={isAuth?<Dashboard user={user}/>:<Login/>}/>
+        <Route path="/course/study/:id" element={isAuth?<CourseStudy user={user}/>:<Login/>}/>
+        <Route path="/lectures/:id" element={isAuth?<Lecture user={user}/>:<Login/>}/>
       </Routes>
       <Footer />
     </BrowserRouter>

@@ -43,14 +43,48 @@ const CourseDescription = () => {
         description: "Learn with EduSpark",
         image: "/assets/app-icon.png",
         order_id: order.id,
-        method: {
-          upi: true,
-          card: true,
-          netbanking: true,
-          wallet: true,
-        },
         prefill: {
-          method: "upi"
+          name: user?.name || '',
+          email: user?.email || '',
+          contact: user?.phone || '',
+        },
+        config: {
+          display: {
+            blocks: {
+              utib: {
+                name: 'Pay using UPI',
+                instruments: [
+                  {
+                    method: 'upi',
+                    flows: ['collect', 'intent', 'qr']
+                  }
+                ]
+              },
+              other: {
+                name: 'Other Payment Methods',
+                instruments: [
+                  {
+                    method: 'card'
+                  },
+                  {
+                    method: 'netbanking'
+                  },
+                  {
+                    method: 'wallet'
+                  }
+                ]
+              }
+            },
+            hide: [
+              {
+                method: 'emi'
+              }
+            ],
+            sequence: ['block.utib', 'block.other'],
+            preferences: {
+              show_default_blocks: false
+            }
+          }
         },
         handler: async (response) => {
           const {
@@ -80,16 +114,32 @@ const CourseDescription = () => {
             setLoading(false);
             navigate(`/payment-success/${razorpay_payment_id}`);
           } catch (error) {
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || "Payment verification failed");
             setLoading(false);
+          }
+        },
+        modal: {
+          ondismiss: () => {
+            setLoading(false);
+            toast.error("Payment cancelled");
           }
         },
         theme: {
           color: "#8a4baf"
+        },
+        retry: {
+          enabled: true,
+          max_count: 3
         }
       };
 
       const razorpay = new window.Razorpay(options);
+      
+      razorpay.on('payment.failed', function (response) {
+        toast.error(`Payment failed: ${response.error.description}`);
+        setLoading(false);
+      });
+
       razorpay.open();
     } catch (error) {
       toast.error(error.response?.data?.message || "Checkout failed");
@@ -103,26 +153,37 @@ const CourseDescription = () => {
         course && (
           <div className="course-description">
             <div className="course-header">
-              <img src={`${server}/${course.image}`} alt="" className='course-image' />
+              <img
+                src={`${server}/${course.image}`}
+                alt={course.title}
+                className="course-image"
+              />
               <div className="course-info">
-                <h2>{course.title}</h2>
+                <h1>{course.title}</h1>
                 <p>Instructor: {course.createdBy}</p>
                 <p>Duration: {course.duration} weeks</p>
               </div>
-              <p>Course Description: {course.description}</p>
-              <p>Let's get started with this course at ₹{course.price}</p>
-              {
-                isAuth && user?.subscription?.includes(course._id) ? (
-                  <button className='common-btn' onClick={() => navigate(`/course/study/${course._id}`)}>
-                    Study
-                  </button>
-                ) : (
-                  <button className='common-btn' onClick={checkoutHandler}>
-                    Buy Now
-                  </button>
-                )
-              }
             </div>
+            <p>Course Description: {course.description}</p>
+            <p>Let's get started with this course at ₹{course.price}</p>
+            {
+              isAuth && user?.subscription?.includes(course._id) ? (
+                <button
+                  onClick={() => navigate(`/course/study/${course._id}`)}
+                  className="common-btn"
+                >
+                  Study
+                </button>
+              ) : (
+                <button
+                  onClick={checkoutHandler}
+                  className="common-btn"
+                  disabled={loading}
+                >
+                  {loading ? 'Processing...' : 'Buy Now'}
+                </button>
+              )
+            }
           </div>
         )
       )}
