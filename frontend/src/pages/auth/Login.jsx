@@ -29,7 +29,6 @@ const Login = () => {
                
             </form>
             <p>Don't have an account? <Link to="/register">Register</Link></p>
-            <p>Forgot your password? <Link to="/verify">Verify</Link></p>
             </div>
     </div>
   )

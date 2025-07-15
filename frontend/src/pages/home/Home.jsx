@@ -8,11 +8,12 @@ const Home = () => {
         <div>
             <div className="home">
                 <div className="home-content">
-                    <h1>Welcome to E-learning Platform</h1>
+                    <h1>Welcome to EduSpark</h1>
                     <p>Explore a wide range of courses and enhance your skills.</p>
                     <button className='common-btn' onClick={() => navigate('/courses')}>Get Started</button>
                 </div>
             </div>
+            <h1 className='student-testimonials'>What our student says</h1>
             <Testimonial/>
         </div>
     )

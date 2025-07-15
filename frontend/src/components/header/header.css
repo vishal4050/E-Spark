@@ -1,37 +1,253 @@
-header{
+/* Root variables for light and dark themes */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --text-primary: #2c3e50;
+    --text-secondary: #555;
+    --text-accent: #8a4baf;
+    --border-color: rgba(138, 75, 175, 0.1);
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+    --card-bg: #ffffff;
+    --link-hover: #8d88c1;
+    --header-bg: #333;
+    --header-text: white;
+    --logo-text: white;
+    --btn-bg: #8a4baf;
+    --btn-text: #ffffff;
+    --btn-hover: #7a3fa4;
+}
+
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-accent: #b565d8;
+    --border-color: rgba(138, 75, 175, 0.2);
+    --shadow-light: rgba(0, 0, 0, 0.3);
+    --shadow-medium: rgba(0, 0, 0, 0.5);
+    --card-bg: #2d2d2d;
+    --link-hover: #c575e8;
+    --header-bg: #1a1a1a;
+    --header-text: #ffffff;
+    --logo-text: #ffffff;
+    --btn-bg: #b565d8;
+    --btn-text: #1a1a1a;
+    --btn-hover: #c281e8;
+}
+
+/* Global transition */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Body styles */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Header */
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 20px;
-    background-color: #333;
-    color: white;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: var(--header-bg);
+    color: var(--header-text);
+    box-shadow: 0px 2px 5px var(--shadow-light);
     margin: 0.05px;
     position: relative;
-    .logo {
-        font-size: 24px;
-        font-weight: 600;
-        @media(max-width: 768px) {
-            font-size: 18px;
-        }
-    }
-    .links {
-        display: flex;
-        gap: 2rem;
-        @media(max-width: 768px) {
-            gap:0.5rem;
-            flex-direction: column;
+}
 
-        }
-        a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            transition: color 0.3s ease;
-            &:hover {
-                color: #8d88c1;
-            }
-        }
+/* Logo */
+header .logo {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--logo-text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+header .logo img {
+    width: 40px;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+header .logo:hover img {
+    transform: scale(1.1);
+}
+
+/* Navigation */
+header .links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+header .links a {
+    color: var(--header-text);
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+header .links a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(141, 136, 193, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+header .links a:hover::before {
+    left: 100%;
+}
+
+header .links a:hover {
+    color: var(--link-hover);
+    transform: translateY(-2px);
+}
+
+/* Theme toggle button */
+.theme-toggle-btn {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px var(--shadow-light);
+    position: relative;
+    margin-left: 1rem;
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+    border-color: var(--text-accent);
+    box-shadow: 0 6px 20px var(--shadow-medium);
+}
+
+.theme-toggle-btn svg {
+    font-size: 1.5rem;
+    color: var(--text-accent);
+}
+
+.theme-toggle-btn:hover svg {
+    transform: rotate(20deg);
+    filter: brightness(1.2);
+}
+
+.theme-toggle-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.theme-toggle-btn:hover::before {
+    left: 100%;
+}
+
+/* Common button (optional) */
+.common-btn {
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.common-btn:hover {
+    background-color: var(--btn-hover);
+    transform: translateY(-1px);
+}
+
+.common-btn:active {
+    transform: scale(0.95);
+}
+
+/* Card (example) */
+.card {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 5px var(--shadow-light);
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    header .logo {
+        font-size: 18px;
     }
-            
+
+    header .links {
+        gap: 0.5rem;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: var(--header-bg);
+        padding: 1rem;
+        border-top: 1px solid var(--border-color);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    header .links.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .theme-toggle-btn {
+        width: 45px;
+        height: 45px;
+    }
+
+    .theme-toggle-btn svg {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 10px 15px;
+    }
+
+    .theme-toggle-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .theme-toggle-btn svg {
+        font-size: 1.2rem;
+    }
 }

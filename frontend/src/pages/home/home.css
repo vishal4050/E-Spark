@@ -43,3 +43,20 @@
         }
     }
 }
+
+ .student-testimonials{
+    padding: 0;
+     text-align: center;
+
+  h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 20px;
+           
+
+            @media (max-width: 768px) {
+                font-size: 28px;
+            }
+        }
+    }
+

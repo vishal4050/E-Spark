@@ -7,7 +7,8 @@ import { promisify } from "util";
 import { User } from "../models/User.js";
 export const createCourse = TryCatch(async (req, res) => {
     const { title, description, category,createdBy,duration,price } = req.body;
-const image= req.file ;
+    const image= req.file ;
+
 await Course.create({
         title,
         description,
