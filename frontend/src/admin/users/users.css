@@ -1,0 +1,16 @@
+.users{
+   @media(max-width:768px) {
+    
+   width: 350px;
+    overflow: auto;
+    white-space: nowrap;
+    margin: 20px auto;
+    min-height: 80vh;
+    border: solid gray 1px;
+   }
+
+}
+td{
+    margin: 40px;
+    padding: 5px;
+}

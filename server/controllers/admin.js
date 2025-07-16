@@ -84,3 +84,36 @@ export const getAllStats = TryCatch(async (req, res) => {
         totalUsers,
     });
 });
+
+export const getAllUsers = TryCatch(async(req, res) => {
+    const users = await User.find({_id: {$ne: req.user._id}}).select("-password");
+    
+    // Fix: Return users in an object with 'users' property to match frontend expectation
+    res.status(200).json({
+        success: true,
+        users: users
+    });
+});
+export const updateRole=TryCatch(async(req,res)=>{
+    if(req.user.mainrole!="superadmin") return res.status(403).json({message:"You are not authorized to perform this action"});
+    const user=await User.findById(req.params.id);
+
+    if(user.role==="user"){
+        user.role="admin"
+    
+    await user.save();
+     return res.status(200).json({
+        success:true,
+        message: `${user.name} Role Updated as Admin`,
+    })
+    }
+    if(user.role==="admin"){
+        user.role="user"
+        await user.save();
+        return res.status(200).json({
+            success:true,
+            message: `${user.name} Role Updated as User`,
+        })
+    }
+
+})

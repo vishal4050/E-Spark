@@ -5,6 +5,7 @@ import { User } from "../models/User.js";
 import { rzp } from "../index.js";
 import { Payment } from "../models/payments.js";
 import crypto from "crypto";
+import { Progress } from "../models/Progress.js";
 export const getAllCourses = TryCatch(async (req, res) => {
 
     const courses = await Course.find();
@@ -90,7 +91,49 @@ export const paymentVerification = TryCatch(async (req, res) => {
         razorpay_signature,
     });
     user.subscription.push(course._id);
+    await Progress.create({
+        course:course._id,
+        completedLectures:[],
+        user:req.user._id
+    })
     await user.save();
 
     res.status(200).json({ message: "Payment successful and course subscribed" });
+})
+
+export const addProgress=TryCatch(async(req,res)=>{
+    const progress=await Progress.findOne({
+        user:req.user._id,
+        course:req.query.course,
+    })
+
+    const {lectureId}=req.query;
+    if(progress.completedLectures.includes(lectureId)){
+        return res.json({message:"Progress recorded"});
+    }
+    progress.completedLectures.push(lectureId);
+
+    await progress.save();
+    res.status(201).json({
+        message: "new Progress recorded",
+    })
+});
+
+export const getProgress=TryCatch(async(req,res)=>{
+const progress=await Progress.findOne({
+        user:req.user._id,
+        course:req.query.course,
+    });
+if(!progress) return res.status(404).json({message:"null"});
+
+const allLectures=(await Lecture.find({course:req.query.course})).length;
+const completedlectures=progress.completedLectures.length;
+const courseProgressPercentage=(completedlectures*100)/allLectures;
+res.json({
+    courseProgressPercentage,
+    completedlectures,
+    allLectures,
+    progress,
+})
+
 })

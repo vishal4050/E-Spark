@@ -2,11 +2,31 @@ import React from 'react';
 import "./coursecard.css";
 import { UserData } from '../../context/UserContext';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import { CourseData } from '../../context/CourseContext';
 const server = "http://localhost:5000"; // define it here
 
 const CourseCard = ({ course }) => {
   const {user,isAuth}=UserData();
   const navigate=useNavigate();
+  const {fetchCourses}=CourseData();
+  const DeleteHandler=async(id)=>{
+    if(confirm("Are you sure you want to delete this course?")){
+        try{
+        const {data}= await axios.delete(`${server}/api/course/${id}`,{
+          headers:{
+            token:localStorage.getItem("token"),
+          },
+        });
+        toast.success(data.message);
+        fetchCourses();
+      }
+      catch(error){
+        console.log(error.response.data.message);
+      }
+    }
+  };
   return (
     <div className="course-card">
       <img src={`${server}/${course.image}`} alt="" className='course-image' />
@@ -32,7 +52,7 @@ const CourseCard = ({ course }) => {
       }
       <br/>
       {
-        user &&user.role==="admin" &&  <button className='common-btn' style={{background:"red", marginTop:"5px"}}>Delete</button>
+        user &&user.role==="admin" && ( <button className='common-btn' style={{background:"red", marginTop:"5px"}} onClick={()=>DeleteHandler(course._id)}>Delete</button>)
       }
     </div>
   );

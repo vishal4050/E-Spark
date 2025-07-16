@@ -18,6 +18,11 @@ import PaymentSuccess from "./pages/paymentsuccess/PaymentSuccess.jsx";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
 import CourseStudy from "./pages/coursestudy/CourseStudy.jsx";
 import Lecture from "./pages/lectures/Lecture.jsx";
+import AdminDashboard from "./admin/dashboard/AdminDashboard.jsx";
+import AdminCourses from "./admin/courses/AdminCourses.jsx";
+import AdminUsers from "./admin/users/AdminUsers.jsx";
+import ForgotPassword from "./pages/auth/ForgotPassword.jsx";
+import ResetPassword from "./pages/auth/ResetPassword.jsx";
 const App = () => {
   const { isAuth, user, loading } = UserData();
 
@@ -31,6 +36,8 @@ const App = () => {
         <Route path="/register" element={isAuth ? <Home /> : <Register />} />
         <Route path="/login" element={isAuth ? <Home /> : <Login />} />
         <Route path="/verify" element={isAuth ? <Home /> : <Verify />} />
+        <Route path="/forgot" element={isAuth?<Home/>:<ForgotPassword/>}/>
+        <Route path="/reset-password/:token" element={isAuth?<Home/>:<ResetPassword/>}/>
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<h1>Contact Us</h1>} />
          <Route path="/courses" element={<Courses/>} />
@@ -40,6 +47,10 @@ const App = () => {
         <Route path="/:id/dashboard" element={isAuth?<Dashboard user={user}/>:<Login/>}/>
         <Route path="/course/study/:id" element={isAuth?<CourseStudy user={user}/>:<Login/>}/>
         <Route path="/lectures/:id" element={isAuth?<Lecture user={user}/>:<Login/>}/>
+        <Route path="/admin/dashboard" element={isAuth?<AdminDashboard user={user}/>:<Login/>}/>
+         <Route path="/admin/course" element={isAuth?<AdminCourses user={user}/>:<Login/>}/>
+         <Route path="/admin/users" element={isAuth?<AdminUsers user={user}/>:<Login/>}/>
+         
       </Routes>
       <Footer />
     </BrowserRouter>

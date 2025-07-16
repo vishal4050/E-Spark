@@ -1,8 +1,9 @@
 import {User} from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import sendMail from "../middlewares/sendMail.js";
+import sendMail, { sendForgotMail } from "../middlewares/sendMail.js";
 import TryCatch from "../middlewares/TryCatch.js";
+import nodemailer from 'nodemailer';
 export const register = TryCatch (async(req, res,next) => {
     const { name, email, password } = req.body;
      let user = await User.findOne({ email});
@@ -75,3 +76,36 @@ export const profile = TryCatch(async (req, res) => {
 const user = await User.findById(req.user._id);
 res.json({ user});
 });
+
+export const forgotPassword=TryCatch(async(req,res)=>{
+  const {email}=req.body;
+  const user=await User.findOne({email});
+  if(!user) return res.status(400).json({message: "No User does with this email"});
+  const token=jwt.sign({email},process.env.FORGOT_PASSWORD);
+  const data={email,token};
+  await sendForgotMail("EduSpark",data);
+  user.resetPasswordExpire=Date.now()+5*60*1000;
+  await user.save();
+  res.json({message:"Reset Password link sent to your email"});
+})
+
+export const resetPassword=TryCatch(async(req,res)=>{
+  const decodedData=jwt.verify(req.query.token,process.env.FORGOT_PASSWORD);
+  const user=await User.findOne({email:decodedData.email});
+  if(!user) return res.status(404).json({message: "No User with this email"});
+  if(user.resetPasswordExpire===null) return res.status(400).json({
+    message: "Password reset link has expired"
+  })
+  if(user.resetPasswordExpire<Date.now()){
+    return res.status(400).json({
+      message: "Password reset link has expired"
+    })
+  }
+  const password=await bcrypt.hash(req.body.password,10);
+  user.password=password;
+  user.resetPasswordExpire=null;
+  await user.save();
+  res.json({
+    message: "Password reset successfully",
+  })
+})
