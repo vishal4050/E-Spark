@@ -7,7 +7,7 @@ const Footer = () => {
         <footer>
             <div className="footer-content">
                 <p>
-                    &copy; 2025 EduSpark. All rights reserved.<br />
+                    &copy; 2025 E-Spark. All rights reserved.<br />
                     Made with <GiNestedHearts/> <a href=''>Vishal</a>
                 </p>
                 <p>Connect with us</p>
