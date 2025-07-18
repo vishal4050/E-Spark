@@ -1,4 +1,6 @@
-# Ignore node_modules from all folders
-**/node_modules/
-# Dependency directories
+# Ignore all node_modules folders
 node_modules/
+**/node_modules/
+
+# Ignore uploads folders inside any server directory (at any depth)
+**/server/**/uploads/
