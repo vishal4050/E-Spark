@@ -77,24 +77,15 @@ Before you begin, ensure you have the following installed:
    
    Update the `.env` file with your configuration:
    ```env
-   # Database
-   DATABASE_URL=mongodb://localhost:27017/espark
-   
-   # Authentication
-   JWT_SECRET=your_jwt_secret_here
-   JWT_EXPIRES_IN=7d
-   
-   # Email (optional)
-   EMAIL_HOST=smtp.gmail.com
-   EMAIL_PORT=587
-   EMAIL_USER=your-email@gmail.com
-   EMAIL_PASS=your-app-password
-   
-   # File Upload Configuration
-   UPLOAD_PATH=./server/uploads
-   MAX_FILE_SIZE=50MB
-   ALLOWED_IMAGE_TYPES=jpeg,jpg,png,gif
-   ALLOWED_VIDEO_TYPES=mp4,avi,mov,mkv
+     PORT=5000
+     DB=
+     JWT_SECRET=
+     PASSWORD=
+     GMAIL=
+     KEY_ID=
+     KEY_SECRET=
+     FORGOT_PASSWORD=super_secret_key_here
+     frontendurl=http://localhost:5173
    ```
 
 4. **Set up the database**
