@@ -267,7 +267,7 @@ See also the list of [contributors](https://github.com/vishal4050/E-Spark/contri
 
 If you have any questions or need help, please:
 
-- 📧 Email: [vishal.developer@example.com](mailto:vishal.developer@example.com)
+- 📧 Email: [vishal.developer@example.com](mailto:vishal.iitice@gmail.com)
 - 🐛 Report issues: [GitHub Issues](https://github.com/vishal4050/E-Spark/issues)
 - 💬 Discussions: [GitHub Discussions](https://github.com/vishal4050/E-Spark/discussions)
 - 🌐 Live App: [E-Spark Learning Platform](https://e-learning-frontend-9zzn.vercel.app/)
