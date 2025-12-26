@@ -4,7 +4,7 @@ import { Lecture } from "../models/Lecture.js";
 import fs from "fs";
 import {rm} from "fs";
 import { promisify } from "util";
-import { User } from "../models/User.js";
+import { User } from "../models/user.js";
 export const createCourse = TryCatch(async (req, res) => {
     const { title, description, category,createdBy,duration,price } = req.body;
     const image= req.file ;

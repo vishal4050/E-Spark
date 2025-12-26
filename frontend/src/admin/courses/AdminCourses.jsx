@@ -71,7 +71,7 @@ const AdminCourses = ({ user }) => {
     myForm.append("category", category);
     myForm.append("price", price);
     myForm.append("duration", duration)
-    myForm.append("file", image);
+    myForm.append("image", image);
     myForm.append("createdBy", createdBy);
 
     try {
@@ -218,7 +218,7 @@ const AdminCourses = ({ user }) => {
                       ))
                     }
                   </select>
-                  <input type="file" required onChange={changeImageHandler} />
+                  <input name="image" type="file" required onChange={changeImageHandler} />
 
                   {imagePrev && <img src={imagePrev} alt="" width={300}></img>}
                   <button type="submit" disabled={btnloading} className="common-btn">
