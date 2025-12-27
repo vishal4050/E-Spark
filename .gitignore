@@ -5,3 +5,10 @@ node_modules/
 # Ignore uploads folders inside any server directory (at any depth)
 **/server/**/uploads/
 .env
+# Environment files
+server/.env
+frontend/.env
+
+# Optional: ignore all env files everywhere
+.env
+.env.*
