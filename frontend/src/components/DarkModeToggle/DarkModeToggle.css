@@ -1,0 +1,111 @@
+/* Create this file: src/components/DarkModeToggle/DarkModeToggle.css */
+
+.dark-mode-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+  padding: 0;
+}
+
+/* Default size */
+.dark-mode-toggle.default {
+  width: 64px; /* w-16 */
+  height: 32px; /* h-8 */
+}
+
+/* Small size */
+.dark-mode-toggle.small {
+  width: 56px; /* w-14 */
+  height: 28px; /* h-7 */
+}
+
+/* Light mode background */
+.dark-mode-toggle.light {
+  background-color: #d1d5db; /* gray-300 */
+}
+
+/* Dark mode background */
+.dark-mode-toggle.dark {
+  background-color: #2563eb; /* blue-600 */
+}
+
+/* Focus states */
+.dark-mode-toggle:focus {
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+}
+
+/* Toggle slider */
+.toggle-slider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Default size slider */
+.default .toggle-slider {
+  width: 24px; /* w-6 */
+  height: 24px; /* h-6 */
+}
+
+/* Small size slider */
+.small .toggle-slider {
+  width: 20px; /* w-5 */
+  height: 20px; /* h-5 */
+}
+
+/* Active slider position */
+.default .toggle-slider.active {
+  transform: translateX(36px); /* translate-x-9 */
+}
+
+.small .toggle-slider.active {
+  transform: translateX(28px); /* translate-x-7 */
+}
+
+/* Icon styles */
+.toggle-icon {
+  position: absolute;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* Sun icon positioning */
+.sun-icon {
+  left: 6px; /* left-1.5 for default, left-1 for small */
+  color: #eab308; /* yellow-500 */
+}
+
+.small .sun-icon {
+  left: 4px;
+}
+
+/* Moon icon positioning */
+.moon-icon {
+  right: 6px; /* right-1.5 for default, right-1 for small */
+  color: #93c5fd; /* blue-300 */
+}
+
+.small .moon-icon {
+  right: 4px;
+}
+
+/* Icon visibility */
+.toggle-icon.visible {
+  opacity: 1;
+}
+
+.toggle-icon.hidden {
+  opacity: 0;
+}

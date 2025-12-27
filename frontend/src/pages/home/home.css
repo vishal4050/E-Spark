@@ -1,5 +1,5 @@
 .home {
-    background-color: #f0f0f0;
+    background-color: var(--bg-color);
     display: flex;
     justify-content: center; 
     text-align: center;
@@ -7,12 +7,13 @@
     .home-content {
         width: 100%; 
         padding: 20px;
-         background-color: #f0f0f0;
+        background-color: var(--bg-color);
         border-radius: 8px;
+        color: var(--text-color);
 
         h1 {
             font-size: 36px;
-            color: #333;
+            color: var(--text-color);
             margin-bottom: 20px;
 
             @media (max-width: 768px) {
@@ -22,7 +23,7 @@
 
         p {
             font-size: 18px;
-            color: #555;
+            color: var(--text-color);
             line-height: 1.6;
             margin-bottom: 20px;
 
@@ -32,7 +33,8 @@
         }
 
         button {
-            background-color: #4CAF50;
+            background-color: var(--button-bg);
+            color: var(--button-text);
             margin-top: 20px;
             font-size: 20px;
             padding: 12px 24px;
@@ -44,19 +46,19 @@
     }
 }
 
- .student-testimonials{
+.student-testimonials {
     padding: 0;
-     text-align: center;
+    text-align: center;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 
-  h1 {
-            font-size: 36px;
-            color: #333;
-            margin-bottom: 20px;
-           
+    h1 {
+        font-size: 36px;
+        color: var(--text-color);
+        margin-bottom: 20px;
 
-            @media (max-width: 768px) {
-                font-size: 28px;
-            }
+        @media (max-width: 768px) {
+            font-size: 28px;
         }
     }
-
+}

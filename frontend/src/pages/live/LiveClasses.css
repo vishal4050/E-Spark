@@ -1,0 +1,253 @@
+/* Student Room Layout */
+.student-room-container {
+  min-height: 100vh;
+  background: linear-gradient(to right, #eef2ff, #f5f3ff);
+  padding: 30px;
+  color: #1f2937;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Page Title */
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #111827;
+  letter-spacing: 0.5px;
+}
+
+/* Video Area */
+.video-container {
+  width: 100%;
+  max-width: 850px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border: 2px solid #d1d5db;
+  background: #000;
+}
+
+.video-player {
+  width: 100%;
+  height: 450px;
+  background: #000;
+}
+
+/* Chat Layout */
+.chat-box {
+  margin-top: 35px;
+  width: 100%;
+  max-width: 850px;
+  background: white;
+  border-radius: 14px;
+  padding: 20px 25px;
+  box-shadow: 0px 10px 25px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.chat-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #374151;
+}
+
+/* Message List */
+.chat-messages {
+  height: 300px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 10px;
+  background: #f9fafb;
+  overflow-y: auto;
+  margin-bottom: 15px;
+}
+
+/* Custom Scrollbar */
+.chat-messages::-webkit-scrollbar {
+  width: 8px;
+}
+.chat-messages::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 10px;
+}
+
+/* Input Box */
+.chat-input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 10px;
+  border: 2px solid #9ca3af;
+  font-size: 16px;
+  outline: none;
+  transition: 0.3s;
+}
+
+.chat-input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 6px rgba(79, 70, 229, 0.4);
+}
+/* ---------------------- TEACHER ROOM ------------------------- */
+
+.teacher-room-container {
+  min-height: 100vh;
+  background: linear-gradient(to right, #111827, #1f2937);
+  color: white;
+  padding: 35px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.teacher-title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* Video display container */
+.teacher-video-container {
+  width: 100%;
+  max-width: 950px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid #374151;
+  background: black;
+  box-shadow: 0px 12px 28px rgba(0,0,0,0.35);
+}
+
+.teacher-video-player {
+  width: 100%;
+  height: 500px;
+  background: #000;
+}
+
+/* Start Streaming Button */
+.teacher-controls {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.start-stream-btn {
+  padding: 15px 35px;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  background: #dc2626;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.start-stream-btn:hover {
+  background: #b91c1c;
+  transform: scale(1.05);
+}
+/* ---------------------- LIVE CLASSES PAGE ------------------------- */
+
+.live-classes-container {
+  min-height: 100vh;
+  background: linear-gradient(to right, #eef2ff, #f5f3ff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.live-title {
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  color: #1f2937;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* Card Section */
+.classes-card {
+  width: 100%;
+  max-width: 1000px;
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  border: 1px solid #d1d5db;
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.1);
+}
+
+.classes-heading {
+  font-size: 26px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 25px;
+}
+
+/* Individual Class Row */
+.class-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 28px;
+  background: #f9fafb;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  margin-bottom: 18px;
+  transition: 0.3s ease;
+}
+
+.class-item:hover {
+  background: white;
+  box-shadow: 0px 6px 18px rgba(0,0,0,0.08);
+}
+
+.class-name {
+  font-size: 22px;
+  font-weight: 500;
+  color: #111827;
+}
+
+/* Buttons */
+.class-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.join-student-btn,
+.join-teacher-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  border: none;
+  transition: 0.2s ease;
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.12);
+}
+
+.join-student-btn {
+  background: #2563eb;
+}
+
+.join-student-btn:hover {
+  background: #1d4ed8;
+  transform: scale(1.05);
+}
+
+.join-teacher-btn {
+  background: #16a34a;
+}
+
+.join-teacher-btn:hover {
+  background: #15803d;
+  transform: scale(1.05);
+}

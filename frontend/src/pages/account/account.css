@@ -1,12 +1,12 @@
 .profile {
-    background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+    background: var(--profile-bg-gradient, linear-gradient(135deg, #fff 0%, #f8f9fa 100%));
     padding: 10px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 4px 15px rgba(0, 0, 0, 0.05);
     width: 400px;
     max-width: 90%;
     margin: 150px auto;
-    border: 1px solid rgba(138, 75, 175, 0.1);
+    border: 1px solid var(--profile-border-color, rgba(138, 75, 175, 0.1));
     position: relative;
     overflow: hidden;
     transition: all 0.3s ease;
@@ -36,7 +36,7 @@
 
 .profile h2 {
     text-align: center;
-    color: #2c3e50;
+    color: var(--text-color);
     font-size: 2.2em;
     margin-bottom: 30px;
     font-weight: 700;
@@ -63,10 +63,10 @@
 
 .profile-info p {
     margin-bottom: 20px;
-    color: #555;
+    color: var(--text-color);
     font-size: 1.1em;
     padding: 15px 20px;
-    background: rgba(138, 75, 175, 0.03);
+    background: var(--profile-info-bg, rgba(138, 75, 175, 0.03));
     border-radius: 12px;
     border-left: 4px solid #8a4baf;
     transition: all 0.3s ease;
@@ -74,7 +74,7 @@
 }
 
 .profile-info p:hover {
-    background: rgba(138, 75, 175, 0.08);
+    background: var(--profile-info-bg-hover, rgba(138, 75, 175, 0.08));
     transform: translateX(5px);
 }
 
@@ -155,18 +155,18 @@
         margin: 90px auto;
         border-radius: 15px;
     }
-    
+
     .profile h2 {
         font-size: 1.8em;
         margin-bottom: 20px;
     }
-    
+
     .profile-info p {
         font-size: 1em;
         padding: 12px 15px;
         margin-bottom: 15px;
     }
-    
+
     .common-btn {
         padding: 12px 25px;
         font-size: 1em;
@@ -178,16 +178,16 @@
         padding: 20px 15px;
         margin: 60px auto;
     }
-    
+
     .profile h2 {
         font-size: 1.6em;
     }
-    
+
     .profile-info p {
         font-size: 0.95em;
         padding: 10px 12px;
     }
-    
+
     .common-btn {
         padding: 10px 20px;
         font-size: 0.95em;

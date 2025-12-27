@@ -1,25 +1,132 @@
-body{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  height: 100%;
+/* Theme Variables */
+:root {
+  --bg-color: #f4f4f4;
+  --text-color: #000000;
+  --button-bg: #4CAF50;
+  --button-text: #ffffff;
+  --button-hover: #45a049;
+
+  --profile-bg-gradient: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+  --profile-border-color: rgba(138, 75, 175, 0.1);
+  --profile-info-bg: rgba(138, 75, 175, 0.03);
+  --profile-info-bg-hover: rgba(138, 75, 175, 0.08);
+
+  --card-bg: aliceblue;
+  --card-heading: #333;
+  --card-text: #666;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+
+  --button-hover-shadow: rgba(102, 126, 234, 0.5);
+
+  --course-title: #2c3e50;
+  --course-info: #555;
+
+  --accent: #764ba2;
+  --text-accent: #8a4baf;
+
+  --input-border: #ddd;
+
+  --danger-bg: #f44336;
+  --danger-hover: #da190b;
+
+  --text-muted: #999;
+  --text-secondary: #666;
+
+  --footer-bg: #8a5bad;
+  --footer-text: white;
+  --footer-link: aliceblue;
+  --footer-hover: #f5f5f5;
+
+  --bg-main: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  --bg-panel: white;
+  --text-primary: #2c3e50;
+  --text-placeholder: #adb5bd;
+  --bg-input: #f8f9fa;
+  --border-color: #e9ecef;
+  --bg-semitrans: rgba(248, 249, 250, 0.5);
 }
-.common-btn{
-  background-color: #4CAF50;
-  color: white;
+
+body.dark-mode {
+  --bg-color: #121212;
+  --text-color: #f0f0f0;
+  --button-bg: #388e3c;
+  --button-text: #ffffff;
+  --button-hover: #2e7d32;
+
+  --profile-bg-gradient: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+  --profile-border-color: rgba(255, 255, 255, 0.08);
+  --profile-info-bg: rgba(255, 255, 255, 0.03);
+  --profile-info-bg-hover: rgba(255, 255, 255, 0.08);
+
+  --card-bg: #1e1e1e;
+  --card-heading: #f0f0f0;
+  --card-text: #cccccc;
+  --card-shadow: rgba(0, 0, 0, 0.6);
+
+  --button-hover-shadow: rgba(76, 87, 165, 0.6);
+
+  --course-title: #ffffff;
+  --course-info: #bbbbbb;
+
+  --accent: #9999ff;
+  --input-border: #444;
+
+  --danger-bg: #c62828;
+  --danger-hover: #b71c1c;
+
+  --text-muted: #aaa;
+  --text-secondary: #aaa;
+
+  --footer-bg: #1a1a1a;
+  --footer-text: #e0e0e0;
+  --footer-link: #cccccc;
+  --footer-hover: #ffffff;
+
+  --bg-main: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+  --bg-panel: #2c2c2c;
+  --text-primary: #f8f8f8;
+  --text-placeholder: #999;
+  --bg-input: #1e1e1e;
+  --border-color: #444;
+  --bg-semitrans: rgba(255, 255, 255, 0.05);
+}
+
+/* Layout */
+main, .app-wrapper {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+}
+
+#root {
+  background-color: var(--bg-color);
+  min-height: 100vh;
+}
+
+html, body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Button Styles */
+.common-btn {
+  background-color: var(--button-bg);
+  color: var(--button-text);
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 18px;
   transition: background-color 0.3s ease;
+}
 
-  &:hover {
-    background-color: #45a049;
-  }
-  @media(max-width: 768px) {
+.common-btn:hover {
+  background-color: var(--button-hover);
+}
+
+@media (max-width: 768px) {
+  .common-btn {
     font-size: 16px;
   }
 }

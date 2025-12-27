@@ -1,24 +1,22 @@
-/* Add these styles to your existing courses.css file */
-
 .courses {
     padding: 80px 0;
     text-align: center;
     min-height: 60vh;
-    
+    background-color: var(--bg-color);
+
     h2 {
         font-size: 32px;
-        color: #8a4baf;
+        color: var(--text-accent);
         margin-bottom: 30px;
     }
-    
+
     .course-container {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: 30px;
     }
-    
-    /* Search functionality styles */
+
     .search-controls {
         margin-bottom: 20px;
         display: flex;
@@ -26,90 +24,93 @@
         align-items: center;
         flex-wrap: wrap;
     }
-    
+
     .search-wrapper {
         display: flex;
         align-items: center;
         gap: 10px;
         flex-wrap: wrap;
     }
-    
+
     .search-input {
         padding: 10px;
         border-radius: 4px;
-        border: 1px solid #ddd;
+        border: 1px solid var(--input-border, #ddd);
+        background-color: var(--bg-color);
+        color: var(--text-color);
         width: 300px;
         font-size: 14px;
         outline: none;
         transition: border-color 0.3s ease;
     }
-    
+
     .search-input:focus {
-        border-color: #8a4baf;
+        border-color: var(--text-accent);
         box-shadow: 0 0 5px rgba(138, 75, 175, 0.3);
     }
-    
+
     .search-select {
         padding: 10px;
         border-radius: 4px;
-        border: 1px solid #ddd;
+        border: 1px solid var(--input-border, #ddd);
+        background-color: var(--bg-color);
+        color: var(--text-color);
         font-size: 14px;
-        background-color: white;
         cursor: pointer;
         outline: none;
         transition: border-color 0.3s ease;
     }
-    
+
     .search-select:focus {
-        border-color: #8a4baf;
+        border-color: var(--text-accent);
         box-shadow: 0 0 5px rgba(138, 75, 175, 0.3);
     }
-    
+
     .clear-button {
         padding: 10px 15px;
-        background-color: #f44336;
-        color: white;
+        background-color: var(--danger-bg, #f44336);
+        color: var(--button-text);
         border: none;
         border-radius: 4px;
         cursor: pointer;
         font-size: 14px;
         transition: background-color 0.3s ease;
     }
-    
+
     .clear-button:hover {
-        background-color: #da190b;
+        background-color: var(--danger-hover, #da190b);
     }
-    
+
     .search-results-info {
         margin-bottom: 15px;
-        color: #666;
+        color: var(--text-secondary, #666);
         font-size: 14px;
     }
-    
+
     .no-results {
         text-align: center;
         margin-top: 40px;
-        color: #999;
+        color: var(--text-muted, #999);
         font-size: 16px;
     }
-    
+
     .no-results-subtitle {
         font-size: 14px;
         margin-top: 10px;
+        color: var(--text-muted, #999);
     }
-    
-    /* Responsive design for search */
+
     @media (max-width: 768px) {
         .search-wrapper {
             flex-direction: column;
             gap: 15px;
         }
-        
+
         .search-input {
             width: 100%;
             max-width: 300px;
         }
-        
+
         .search-select {
             width: 100%;
             max-width: 150px;

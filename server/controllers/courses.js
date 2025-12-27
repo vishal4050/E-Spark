@@ -7,20 +7,25 @@ import { Payment } from "../models/payments.js";
 import crypto from "crypto";
 import { Progress } from "../models/Progress.js";
 
-import { uploadToSupabase } from "../utils/uploadtosupabase.js"; // 🆕
-import { getSupabase } from "../database/supabase.js";               // 🆕
+import { uploadToSupabase } from "../utils/uploadtosupabase.js";
+import { getSupabase } from "../database/supabase.js";
+import {
+  attachCourseImage,
+  attachCourseImages,
+} from "../utils/attachCourseImage.js";
 
 /* ================= COURSES ================= */
 
 export const getAllCourses = TryCatch(async (req, res) => {
   const courses = await Course.find();
-  res.json({ courses });
+  res.json({ courses: attachCourseImages(courses) });
 });
 
 export const getCourseDetails = TryCatch(async (req, res) => {
   const course = await Course.findById(req.params.id);
   if (!course) return res.status(404).json({ message: "Course not found" });
-  res.json({ course });
+
+  res.json({ course: attachCourseImage(course) });
 });
 
 /* ================= LECTURES ================= */
@@ -32,62 +37,46 @@ export const fetchLectures = TryCatch(async (req, res) => {
   if (user.role === "admin") return res.json({ lectures });
 
   if (!user.subscription.includes(req.params.id)) {
-    return res.status(400).json({ message: "You have not subscribed to this course" });
+    return res
+      .status(400)
+      .json({ message: "You have not subscribed to this course" });
   }
 
   res.json({ lectures });
 });
 
 export const fetchLecture = TryCatch(async (req, res) => {
-  console.log("=== Fetch Lecture ===");
-  console.log("Lecture ID from params:", req.params.id);
-  console.log("Authenticated user:", req.user);
-
   if (!req.user || !req.user._id) {
-    console.error("No authenticated user found in request");
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  // Fetch lecture from DB
   const lecture = await Lecture.findById(req.params.id);
   if (!lecture) {
-    console.error("Lecture not found in DB");
     return res.status(404).json({ message: "Lecture not found" });
   }
-  console.log("Lecture found:", lecture.title);
 
-  // Fetch user from DB
   const user = await User.findById(req.user._id);
-  if (!user) {
-    console.error("User not found in DB");
-    return res.status(401).json({ message: "Unauthorized" });
+  if (
+    user.role !== "admin" &&
+    !user.subscription.includes(lecture.course.toString())
+  ) {
+    return res
+      .status(403)
+      .json({ message: "You have not subscribed to this course" });
   }
 
-  // Check subscription
-  if (user.role !== "admin" && !user.subscription.includes(lecture.course.toString())) {
-    console.error("User not subscribed to this course");
-    return res.status(403).json({ message: "You have not subscribed to this course" });
-  }
-
-  // Generate Supabase signed URL if video is not a full URL
   let videoUrl = lecture.video;
-  if (!videoUrl.startsWith("http")) {
-    try {
-      const { data, error } = await getSupabase().storage
-        .from("lectures")
-        .createSignedUrl(videoUrl, 60 * 60);
 
-      if (error) {
-        console.error("Error generating Supabase signed URL:", error);
-      } else {
-        videoUrl = data.signedUrl;
-      }
-    } catch (err) {
-      console.error("Supabase URL generation failed:", err);
+  // Generate signed URL for Supabase video
+  if (!videoUrl.startsWith("http")) {
+    const { data, error } = await getSupabase().storage
+      .from("lectures")
+      .createSignedUrl(videoUrl, 60 * 60);
+
+    if (!error) {
+      videoUrl = data.signedUrl;
     }
   }
-
-  console.log("Returning lecture with video URL:", videoUrl);
 
   res.json({
     lecture: {
@@ -97,52 +86,34 @@ export const fetchLecture = TryCatch(async (req, res) => {
   });
 });
 
-
 /* ================= ADD LECTURE (ADMIN) ================= */
-export const addLecture = TryCatch(async (req, res) => {
-  console.log("=== Add Lecture Route ===");
-  console.log("Body:", req.body);
-  console.log("File:", req.file); // Check if multer parsed the file
-  console.log("Params:", req.params);
 
+export const addLecture = TryCatch(async (req, res) => {
   if (!req.file) {
-    console.error("No file uploaded!");
     return res.status(400).json({ message: "No file uploaded" });
   }
 
-  const courseId = req.params.id;
+  const videoKey = await uploadToSupabase("lectures", req.file);
 
-  let videoKey;
-  try {
-    videoKey = await uploadToSupabase("lectures", req.file);
-    console.log("Supabase upload success:", videoKey);
-  } catch (err) {
-    console.error("Supabase upload failed:", err);
-    return res.status(500).json({ message: "Supabase upload failed", error: err.message });
-  }
+  const lecture = await Lecture.create({
+    title: req.body.title,
+    description: req.body.description,
+    course: req.params.id,
+    video: videoKey,
+  });
 
-  let lecture;
-  try {
-    lecture = await Lecture.create({
-      title: req.body.title,
-      description: req.body.description,
-      course: courseId,
-      video: videoKey,
-    });
-    console.log("Lecture created in DB:", lecture._id);
-  } catch (err) {
-    console.error("DB error creating lecture:", err);
-    return res.status(500).json({ message: "Database error", error: err.message });
-  }
-
-  res.status(201).json({ message: "Lecture added", lecture });
+  res.status(201).json({
+    success: true,
+    message: "Lecture added",
+    lecture,
+  });
 });
 
 /* ================= MY COURSES ================= */
 
 export const getMyCourses = TryCatch(async (req, res) => {
   const courses = await Course.find({ _id: req.user.subscription });
-  res.json({ courses });
+  res.json({ courses: attachCourseImages(courses) });
 });
 
 /* ================= PAYMENTS ================= */
@@ -160,11 +131,19 @@ export const checkout = TryCatch(async (req, res) => {
     currency: "INR",
   });
 
-  res.json({ order, course });
+  res.json({
+    order,
+    course: attachCourseImage(course),
+  });
 });
 
 export const paymentVerification = TryCatch(async (req, res) => {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+  const {
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+  } = req.body;
+
   const user = await User.findById(req.user._id);
   const course = await Course.findById(req.params.id);
 
@@ -179,15 +158,15 @@ export const paymentVerification = TryCatch(async (req, res) => {
   }
 
   await Payment.create(req.body);
+
   user.subscription.push(course._id);
+  await user.save();
 
   await Progress.create({
     course: course._id,
     user: user._id,
     completedLectures: [],
   });
-
-  await user.save();
 
   res.json({ message: "Payment successful" });
 });
@@ -218,7 +197,10 @@ export const getProgress = TryCatch(async (req, res) => {
 
   if (!progress) return res.status(404).json({ message: "null" });
 
-  const allLectures = await Lecture.countDocuments({ course: req.query.course });
+  const allLectures = await Lecture.countDocuments({
+    course: req.query.course,
+  });
+
   const completed = progress.completedLectures.length;
 
   res.json({

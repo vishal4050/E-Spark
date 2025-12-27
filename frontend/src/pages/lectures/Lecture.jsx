@@ -93,13 +93,31 @@ const Lecture = ({ user }) => {
     }
   };
 
-  // Delete lecture
+  // Delete lecture with permanent/unlink option
   const deleteHandler = async (id) => {
     if (!window.confirm("Are you sure you want to delete this lecture?")) return;
+
+    const unlink = window.confirm(
+      "Do you want to DELETE the lecture ?\n(The video will remain in storage)"
+    );
+
+    let permanent = false;
+    if (unlink) {
+      permanent = window.confirm(
+        "Do you want to PERMANENTLY delete the video from storage?"
+      );
+    } else {
+      // User cancelled, do nothing
+      return;
+    }
+
     try {
-      const { data } = await axios.delete(`${server}/api/lecture/${id}`, {
-        headers: { token: localStorage.getItem("token") },
-      });
+      const { data } = await axios.delete(
+        `${server}/api/lecture/${id}?permanent=${permanent}`,
+        {
+          headers: { token: localStorage.getItem("token") },
+        }
+      );
       toast.success(data.message);
       fetchLectures();
     } catch (error) {
