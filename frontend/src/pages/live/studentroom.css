@@ -1,112 +1,89 @@
-/* Full screen container */
 .student-room {
+  height: 100vh;
+  width: 100%;
+  background: black;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #0f1218;
-  padding: 20px;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Video wrapper with shadow and rounded corners */
 .student-room__video-wrapper {
   position: relative;
-  width: 80%;
-  max-width: 960px;
-  aspect-ratio: 16/9;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
-  background-color: black;
+  width: 100%;
+  height: 100%;
 }
 
-/* Video element */
 .student-room__video {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  background-color: black;
+  object-fit: contain;
+  background: black;
 }
 
-/* LIVE indicator */
 .student-room__live-indicator {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  background-color: rgba(0,0,0,0.5);
-  color: #fff;
+  top: 10px;
+  left: 10px;
+  color: red;
   font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.9rem;
   z-index: 10;
 }
 
 .live-dot {
-  width: 10px;
   height: 10px;
-  background-color: red;
+  width: 10px;
+  background: red;
   border-radius: 50%;
-  animation: blink 1s infinite;
+  display: inline-block;
+  margin-right: 5px;
 }
 
-@keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0; }
-}
-
-/* Full-width controls container */
 .student-room__controls-full {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 10px;
   width: 100%;
-  background: rgba(0, 0, 0, 0.6);
   display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
-  box-sizing: border-box;
+  justify-content: center;
+  gap: 10px;
+  z-index: 10;
 }
 
-/* Left side buttons */
-.controls-left {
-  display: flex;
-  gap: 12px;
-}
-
-/* Right side buttons */
-.controls-right {
-  display: flex;
-  gap: 12px;
-}
-
-/* Individual control buttons */
 .control-btn {
-  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 14px;
+  font-size: 16px;
+  border-radius: 8px;
   border: none;
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.2s;
+  background: rgba(0,0,0,0.6);
+  color: white;
 }
 
-.control-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-/* Leave button special style */
 .leave-btn {
-  background: #e74c3c;
-  font-weight: bold;
+  background: red;
 }
 
-.leave-btn:hover {
-  background: #c0392b;
+.audio-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.6);
+  z-index: 20;
+}
+
+.enable-audio-btn {
+  font-size: 18px;
+  padding: 14px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #22c55e;
+  color: white;
+}
+
+/* 📱 MOBILE */
+@media (max-width: 768px) {
+  .control-btn {
+    font-size: 14px;
+    padding: 8px 10px;
+  }
 }
