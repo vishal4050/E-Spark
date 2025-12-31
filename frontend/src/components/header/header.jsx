@@ -53,13 +53,14 @@ const Header = ({ isAuth }) => {
         <Link to="/">Home</Link>
         <Link to="/courses">Courses</Link>
         <Link to="/about">About Us</Link>
-
+        <Link to="/live">Live Classroom</Link>
         {isAuth ? (
           <Link to="/account">Account</Link>
         ) : currentPath === "/login" ? (
           <Link to="/register">Register</Link>
         ) : currentPath === "/register" ? (
           <Link to="/login">Login</Link>
+          
         ) : showBoth ? (
           <>
             <Link to="/login">Login</Link>
@@ -82,7 +83,7 @@ const Header = ({ isAuth }) => {
         <Link to="/" onClick={toggleSidebar}>Home</Link>
         <Link to="/courses" onClick={toggleSidebar}>Courses</Link>
         <Link to="/about" onClick={toggleSidebar}>About Us</Link>
-
+        <Link to="/live" onClick={toggleSidebar}>Live Classroom</Link>
         {isAuth ? (
           <Link to="/account" onClick={toggleSidebar}>Account</Link>
         ) : currentPath === "/login" ? (

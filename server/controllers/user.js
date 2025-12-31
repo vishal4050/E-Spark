@@ -64,7 +64,16 @@ if(!user) return res.status(400).json({
 const isMatch = await bcrypt.compare(password, user.password);
 if(!isMatch) return res.status(400).json({
     message: "Incorrect Password",})
-const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "15d" });
+const token = jwt.sign(
+  { 
+    _id: user._id,
+    role: user.role,       // include role
+    mainrole: user.mainrole // optional if needed
+  }, 
+  process.env.JWT_SECRET, 
+  { expiresIn: "15d" }
+);
+
 res.json({
     message:`Welcome back ${user.name}`,
     token,

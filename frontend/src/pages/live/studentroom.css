@@ -1,0 +1,61 @@
+/* ===============================
+   STUDENT ROOM (VIEWER)
+================================ */
+
+.student-room {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #111827, #020617);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Main container */
+.student-video-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  background: #000;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
+  position: relative;
+}
+
+/* Video player */
+.student-video {
+  width: 100%;
+  height: 600px;
+  object-fit: contain;
+  background: #000;
+}
+
+/* Live badge */
+.student-live-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(220, 38, 38, 0.95);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+/* Footer (future chat / controls) */
+.student-footer {
+  background: #020617;
+  padding: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .student-video {
+    height: 320px;
+  }
+}

@@ -51,14 +51,11 @@ const App = () => {
         <Route path="/course/study/:id" element={isAuth?<CourseStudy user={user}/>:<Login/>}/>
         <Route path="/lectures/:id" element={isAuth?<Lecture user={user}/>:<Login/>}/>
         <Route path="/admin/dashboard" element={isAuth?<AdminDashboard user={user}/>:<Login/>}/>
-         <Route path="/admin/course" element={isAuth?<AdminCourses user={user}/>:<Login/>}/>
-         <Route path="/admin/users" element={isAuth?<AdminUsers user={user}/>:<Login/>}/>
-         <Route path="/live-class" element={<LiveClassroom />} />
-         <Route path="/live/teacher/:id" element={<TeacherRoom />} />
-         <Route path="/live/student/:id" element={<StudentRoom />} />  
-         
-
-         
+        <Route path="/admin/course" element={isAuth?<AdminCourses user={user}/>:<Login/>}/>
+        <Route path="/admin/users" element={isAuth?<AdminUsers user={user}/>:<Login/>}/>
+        <Route path="/live" element={<LiveClassroom />} />
+        <Route path="/live/teacher/:classId" element={isAuth?<TeacherRoom />:<Login />} />
+        <Route path="/live/student/:classId" element={isAuth?<StudentRoom />:<Login />} />  
       </Routes>
       <Footer />
     </BrowserRouter>

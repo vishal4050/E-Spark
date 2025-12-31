@@ -1,0 +1,52 @@
+/* ===============================
+   TEACHER ROOM (BROADCAST VIEW)
+================================ */
+
+.teacher-room {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #1f2933, #0b0f14);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Video container */
+.teacher-video-wrapper {
+  width: 100%;
+  max-width: 1000px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+  position: relative;
+}
+
+/* Teacher video */
+.teacher-video {
+  width: 100%;
+  height: 560px;
+  object-fit: cover;
+  background: #000;
+}
+
+/* Live badge */
+.teacher-live-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(220, 38, 38, 0.95);
+  color: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .teacher-video {
+    height: 320px;
+  }
+}

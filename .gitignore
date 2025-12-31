@@ -4,10 +4,14 @@ node_modules/
 
 # Ignore uploads folders inside any server directory (at any depth)
 **/server/**/uploads/
-.env
+**/.env/
 # Environment files
 server/.env
 frontend/.env
+live-class-service/.env
+**/live-class-service/node_modules
+**/server/node_modules
+**/frontend/node_modules
 
 # Optional: ignore all env files everywhere
 .env

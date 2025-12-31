@@ -6,11 +6,11 @@ import { CourseContextProvider } from './context/CourseContext.jsx'
 
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  
     <UserContextProvider>
     <CourseContextProvider>
       <App />
     </CourseContextProvider>
     </UserContextProvider>
-  </StrictMode>
+
 )
