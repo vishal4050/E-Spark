@@ -1,63 +1,88 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { connectSocket } from "../../socket/socket";
+import toast, { Toaster } from "react-hot-toast";
 import "./studentroom.css";
 
 const StudentRoom = () => {
   const { classId } = useParams();
+  const navigate = useNavigate();
+
   const videoRef = useRef(null);
   const pcRef = useRef(null);
   const socketRef = useRef(null);
 
+  // States
   const [isMuted, setIsMuted] = useState(true);
+  const [volume, setVolume] = useState(1);
+  const [isConnected, setIsConnected] = useState(false);
 
-  // 🔊 Enable audio (AUTOPLAY FIX)
+  // 🔊 Enable Audio (Unlock Autoplay)
   const enableAudio = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = false;
-    videoRef.current.volume = 1;
-    videoRef.current.play();
-    setIsMuted(false);
-    console.log("🔊 Audio enabled by user");
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.volume = volume;
+      videoRef.current.play().catch((e) => console.error(e));
+      setIsMuted(false);
+      toast.success("Audio Enabled 🔊");
+    }
   };
 
-  // 🔇 Toggle mute
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    const muted = !videoRef.current.muted;
-    videoRef.current.muted = muted;
-    setIsMuted(muted);
+  // 🎚 Handle Volume
+  const handleVolumeChange = (e) => {
+    const val = parseFloat(e.target.value);
+    setVolume(val);
+    if (videoRef.current) {
+      videoRef.current.volume = val;
+      videoRef.current.muted = val === 0;
+      setIsMuted(val === 0);
+    }
   };
 
-  // ⛶ Fullscreen (mobile safe)
-  const handleFullScreen = () => {
-    const el = videoRef.current;
-    if (!el) return;
-    if (el.requestFullscreen) el.requestFullscreen();
-    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  // ⛶ Full Screen
+  const toggleFullScreen = () => {
+    if (videoRef.current) {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen();
+      } else if (videoRef.current.webkitRequestFullscreen) {
+        videoRef.current.webkitRequestFullscreen();
+      }
+    }
+  };
+
+  // 🚪 Leave Class
+  const leaveClass = () => {
+    socketRef.current?.emit("leave-class", { classId });
+    if (pcRef.current) pcRef.current.close();
+    socketRef.current?.disconnect();
+    toast("Left Class", { icon: "👋" });
+    navigate("/");
   };
 
   useEffect(() => {
     const socket = connectSocket();
     socketRef.current = socket;
 
-    socket.emit("join-class", { classId });
+    socket.on("connect", () => {
+      socket.emit("join-class", { classId });
+    });
 
     socket.on("webrtc-offer", async ({ offer, teacherSocketId }) => {
+      // Hide loader immediately
+      setIsConnected(true);
+
+      if (pcRef.current) pcRef.current.close();
+
       const pc = new RTCPeerConnection({
         iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
       });
       pcRef.current = pc;
 
       pc.ontrack = (event) => {
-        const stream = event.streams[0];
-
-        console.log("🎧 Received tracks:", {
-          audio: stream.getAudioTracks().length,
-          video: stream.getVideoTracks().length,
-        });
-
-        videoRef.current.srcObject = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = event.streams[0];
+          setIsConnected(true);
+        }
       };
 
       pc.onicecandidate = (event) => {
@@ -69,7 +94,7 @@ const StudentRoom = () => {
         }
       };
 
-      await pc.setRemoteDescription(offer);
+      await pc.setRemoteDescription(new RTCSessionDescription(offer));
       const answer = await pc.createAnswer();
       await pc.setLocalDescription(answer);
 
@@ -77,55 +102,82 @@ const StudentRoom = () => {
     });
 
     socket.on("webrtc-ice", ({ candidate }) => {
-      if (candidate) {
-        pcRef.current?.addIceCandidate(candidate).catch(console.error);
-      }
+      pcRef.current?.addIceCandidate(new RTCIceCandidate(candidate));
+    });
+
+    socket.on("class-ended", () => {
+      toast.error("Class Ended");
+      setTimeout(leaveClass, 2000);
     });
 
     return () => {
-      socket.off("webrtc-offer");
-      socket.off("webrtc-ice");
+      socket.disconnect();
       pcRef.current?.close();
     };
   }, [classId]);
 
   return (
     <div className="student-room">
-      <div className="student-room__video-wrapper">
-        <div className="student-room__live-indicator">
-          <span className="live-dot"></span> LIVE
-        </div>
+      <Toaster position="top-center" />
 
-        {/* 🎥 VIDEO */}
+      {/* VIDEO CONTAINER */}
+      <div className="student-video-wrapper">
+
+        {/* LOADER */}
+        {!isConnected && (
+          <div className="loading-page">
+            <div className="loader"></div>
+            <div className="loader-text">Waiting for Teacher...</div>
+          </div>
+        )}
+
+        {/* LIVE TAG */}
+        {isConnected && (
+          <div className="live-tag">
+            <div className="live-dot"></div>
+            LIVE
+          </div>
+        )}
+
+        {/* TAP TO UNMUTE */}
+        {isConnected && isMuted && (
+          <div className="tap-to-unmute">
+            <button onClick={enableAudio}>🔊 TAP TO UNMUTE</button>
+          </div>
+        )}
+
+        {/* VIDEO PLAYER */}
         <video
           ref={videoRef}
           autoPlay
           playsInline
-          className="student-room__video"
+          muted={true} // Important: Start muted for autoplay
+          className="main-video"
         />
 
-        {/* 🔊 AUDIO ENABLE OVERLAY */}
-        {isMuted && (
-          <div className="audio-overlay">
-            <button className="enable-audio-btn" onClick={enableAudio}>
-              🔊 Tap to Enable Audio
+        {/* CONTROLS BAR */}
+        <div className="controls-bar">
+          <div className="left-controls">
+            <span className="vol-icon">{volume === 0 ? "🔇" : "🔊"}</span>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.05"
+              value={volume}
+              onChange={handleVolumeChange}
+              className="volume-slider"
+            />
+          </div>
+
+          <div className="right-controls">
+            <button className="icon-btn" onClick={toggleFullScreen} title="Full Screen">
+              ⛶
+            </button>
+            <button className="leave-btn" onClick={leaveClass}>
+              Leave Class
             </button>
           </div>
-        )}
-
-        {/* 🎛 CONTROLS */}
-        <div className="student-room__controls-full">
-          <button className="control-btn" onClick={toggleMute}>
-            {isMuted ? "🔇 Muted" : "🔊 Sound"}
-          </button>
-
-          <button className="control-btn" onClick={handleFullScreen}>
-            ⛶ Full Screen
-          </button>
-
-          <button className="control-btn leave-btn">
-            🚪 Leave
-          </button>
         </div>
       </div>
     </div>

@@ -1,89 +1,213 @@
-.student-room {
-  height: 100vh;
-  width: 100%;
-  background: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* ================= RESET ================= */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
 }
 
-.student-room__video-wrapper {
+/* ================= MAIN ROOM ================= */
+.student-room {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ================= VIDEO WRAPPER ================= */
+.student-video-wrapper {
   position: relative;
   width: 100%;
   height: 100%;
+  background: #000;
+  overflow: hidden;
 }
 
-.student-room__video {
+/* ================= VIDEO ================= */
+.main-video {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background: black;
+  background: #000;
 }
 
-.student-room__live-indicator {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  color: red;
-  font-weight: bold;
-  z-index: 10;
-}
-
-.live-dot {
-  height: 10px;
-  width: 10px;
-  background: red;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 5px;
-}
-
-.student-room__controls-full {
-  position: absolute;
-  bottom: 10px;
-  width: 100%;
+.loading-page {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  height: 100%;
   gap: 10px;
   z-index: 10;
 }
 
-.control-btn {
-  padding: 10px 14px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  background: rgba(0,0,0,0.6);
-  color: white;
-}
-
-.leave-btn {
-  background: red;
-}
-
-.audio-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  justify-content: center;
+.loader {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #e0e0e0;
+  border-top: 6px solid #8a4baf;
+  border-radius: 50%;
+  animation: spin 1s linear infinite; /* Only spinner rotates */
   align-items: center;
-  background: rgba(0,0,0,0.6);
+}
+
+.loader-text {
+  color:black;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center; /* stays static */
+}
+
+/* Spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+/* ================= LIVE TAG ================= */
+.live-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 0, 0, 0.85);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 10;
+}
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  background: red;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
+/* ================= TAP TO UNMUTE ================= */
+.tap-to-unmute {
+  position: absolute;
+  bottom: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+}
+
+.tap-to-unmute button {
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+
+  background: #28a745;
+  color: white;
+  box-shadow: 0 0 25px rgba(40, 167, 69, 0.6);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.tap-to-unmute button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px rgba(40, 167, 69, 0.9);
+}
+
+/* ================= CONTROLS BAR ================= */
+.controls-bar {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 40px);
+  max-width: 900px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.65);
+  padding: 12px 16px;
+  border-radius: 10px;
   z-index: 20;
 }
 
-.enable-audio-btn {
-  font-size: 18px;
-  padding: 14px 20px;
-  border-radius: 10px;
-  border: none;
-  background: #22c55e;
+/* LEFT CONTROLS */
+.left-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: white;
 }
 
-/* 📱 MOBILE */
-@media (max-width: 768px) {
-  .control-btn {
-    font-size: 14px;
-    padding: 8px 10px;
-  }
+.volume-slider {
+  width: 120px;
+}
+
+/* RIGHT CONTROLS */
+.right-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  background: #222;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.controls-bar button {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #222;
+  color: #fff;
+  transition: 0.2s;
+}
+
+.controls-bar button:hover,
+.icon-btn:hover {
+  background: #333;
+}
+
+/* LEAVE BUTTON */
+.leave-btn {
+  background: #c00;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.leave-btn:hover {
+  background: #f00;
+}
+
+/* CONTROLS & UNMUTE ALWAYS VISIBLE ON HOVER */
+.student-video-wrapper:hover .controls-bar,
+.student-video-wrapper:hover .tap-to-unmute {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.controls-bar,
+.tap-to-unmute {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 }

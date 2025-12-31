@@ -1,90 +1,103 @@
-.teacher-room {
-  background: #0f172a;
-  min-height: 100vh;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* 🔴 LIVE */
-.live-indicator {
-  color: #fff;
-  font-weight: 600;
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.live-indicator .dot {
-  width: 10px;
-  height: 10px;
-  background: red;
-  border-radius: 50%;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.3; }
-  100% { opacity: 1; }
-}
-
-/* 📺 VIDEO STABILITY FIX */
-.video-wrapper {
-  width: 100%;
-  max-width: 1200px;
-  aspect-ratio: 16 / 9;
-  background: black;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.teacher-video {
-  width: 100%;
+/* ================= RESET ================= */
+html,
+body {
+  margin: 0;
+  padding: 0;
   height: 100%;
-  object-fit: contain;   /* 🔥 FIXES ZOOM ISSUE */
-  background: black;
+  overflow: hidden;
+  background: #000;
 }
 
-/* 🎛 CONTROLS */
-.controls {
-  margin-top: 16px;
+/* ================= MAIN WRAPPER ================= */
+.teacher-room {
+  position: fixed;
+  inset: 0;
+  background: #000;
   display: flex;
-  gap: 12px;
+  align-items: center;
+  justify-content: center;
 }
 
-.controls button {
-  padding: 10px 16px;
-  font-size: 14px;
-  border-radius: 6px;
+/* ================= VIDEO ================= */
+.teacher-video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain; /* keeps full screen share visible */
+  background: #000;
+}
+
+/* ================= GO LIVE BUTTON ================= */
+.go-live-btn {
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 10px;
   border: none;
   cursor: pointer;
-  background: #1e293b;
+  background: red;
   color: white;
+  box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.controls button:hover {
-  background: #334155;
+.go-live-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 35px rgba(255, 0, 0, 0.9);
 }
 
-.controls .rec {
-  background: #dc2626;
+/* ================= TOP BAR ================= */
+.top-bar {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 0, 0, 0.85);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  z-index: 10;
 }
 
-/* 📱 MOBILE */
-@media (max-width: 768px) {
-  .video-wrapper {
-    width: 100%;
-  }
+/* ================= CONTROLS ================= */
+.control-bar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 12px 16px;
+  border-radius: 10px;
+  z-index: 10;
+}
 
-  .controls {
-    flex-direction: column;
-    width: 100%;
-  }
+.control-bar button {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  background: #222;
+  color: #fff;
+}
 
-  .controls button {
-    width: 100%;
-  }
+.control-bar button:hover {
+  background: #333;
+}
+
+/* ================= RECORD ================= */
+.control-bar .rec {
+  background: red;
+}
+
+/* ================= END CLASS ================= */
+.end-btn {
+  background: #c00;
+}
+
+.end-btn:hover {
+  background: #f00;
 }

@@ -59,6 +59,33 @@ export const liveSocket = (io) => {
       }
     });
 
+    // ================= STUDENT LEAVE =================
+    socket.on("leave-class", ({ classId }) => {
+      const room = getRoom(classId);
+      if (!room) return;
+
+      if (room.students.has(socket.id)) {
+        room.students.delete(socket.id);
+
+        console.log("🚪 STUDENT LEFT:", socket.id);
+
+        io.to(room.instructorSocketId).emit("student-left", {
+          studentSocketId: socket.id,
+        });
+      }
+    });
+
+    // ================= END CLASS (TEACHER) =================
+    socket.on("end-class", ({ classId }) => {
+      const room = getRoom(classId);
+      if (!room) return;
+
+      io.to(classId).emit("class-ended");
+      rooms.delete(classId);
+
+      console.log("🛑 CLASS ENDED:", classId);
+    });
+
     // ================= WEBRTC =================
     socket.on("webrtc-offer", ({ studentSocketId, offer }) => {
       console.log("📤 OFFER →", studentSocketId);
@@ -83,14 +110,25 @@ export const liveSocket = (io) => {
       });
     });
 
+    // ================= DISCONNECT =================
     socket.on("disconnect", () => {
       console.log("❌ DISCONNECTED:", socket.id);
 
       for (const [classId, room] of rooms.entries()) {
+        // Teacher disconnected
         if (room.instructorSocketId === socket.id) {
+          io.to(classId).emit("class-ended");
           rooms.delete(classId);
-        } else if (room.students.has(socket.id)) {
-          removeStudent(classId, socket.id);
+          console.log("🧹 ROOM CLOSED:", classId);
+        }
+
+        // Student disconnected
+        if (room.students.has(socket.id)) {
+          room.students.delete(socket.id);
+          io.to(room.instructorSocketId).emit("student-left", {
+            studentSocketId: socket.id,
+          });
+          console.log("🧹 STUDENT REMOVED:", socket.id);
         }
       }
     });
