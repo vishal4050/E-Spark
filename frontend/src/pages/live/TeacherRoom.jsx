@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { connectSocket } from "../../socket/socket";
+import "./teacherroom.css";
 
 const TeacherRoom = () => {
   const { classId } = useParams();
@@ -8,19 +9,19 @@ const TeacherRoom = () => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
   const peersRef = useRef({});
+  const recorderRef = useRef(null);
+  const recordedChunksRef = useRef([]);
+
+  const [isRecording, setIsRecording] = useState(false);
 
   useEffect(() => {
     const socket = connectSocket();
 
     socket.on("connect", async () => {
-      console.log("👨‍🏫 Teacher connected:", socket.id);
-
-      // 1️⃣ Create / reattach room
       socket.emit("start-class", { classId });
 
-      // 2️⃣ Start screen share
       const stream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
+        video: { frameRate: 30 },
         audio: false,
       });
 
@@ -29,16 +30,10 @@ const TeacherRoom = () => {
       videoRef.current.muted = true;
       await videoRef.current.play();
 
-      console.log("🖥️ Screen sharing started");
-
-      // 3️⃣ VERY IMPORTANT: notify backend
       socket.emit("teacher-ready", { classId });
     });
 
-    // 🔔 Student joined
     socket.on("student-joined", async ({ studentSocketId }) => {
-      console.log("👨‍🎓 Student joined:", studentSocketId);
-
       const pc = new RTCPeerConnection({
         iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
       });
@@ -62,11 +57,9 @@ const TeacherRoom = () => {
       await pc.setLocalDescription(offer);
 
       socket.emit("webrtc-offer", { studentSocketId, offer });
-      console.log("📤 Offer sent to:", studentSocketId);
     });
 
     socket.on("webrtc-answer", async ({ studentSocketId, answer }) => {
-      console.log("📥 Answer from:", studentSocketId);
       await peersRef.current[studentSocketId]?.setRemoteDescription(answer);
     });
 
@@ -80,10 +73,61 @@ const TeacherRoom = () => {
     };
   }, [classId]);
 
+  /* 🎥 Fullscreen */
+  const handleFullscreen = () => {
+    const video = videoRef.current;
+    if (video.requestFullscreen) video.requestFullscreen();
+  };
+
+  /* 🔴 Recording */
+  const toggleRecording = () => {
+    if (!isRecording) {
+      const recorder = new MediaRecorder(streamRef.current);
+      recorderRef.current = recorder;
+      recordedChunksRef.current = [];
+
+      recorder.ondataavailable = (e) => recordedChunksRef.current.push(e.data);
+      recorder.onstop = downloadRecording;
+
+      recorder.start();
+      setIsRecording(true);
+    } else {
+      recorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const downloadRecording = () => {
+    const blob = new Blob(recordedChunksRef.current, { type: "video/webm" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `class-${classId}.webm`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div>
-      <h2>Teacher Screen</h2>
-      <video ref={videoRef} autoPlay muted playsInline />
+    <div className="teacher-room">
+      <div className="live-indicator">
+        <span className="dot" /> LIVE
+      </div>
+
+      <div className="video-wrapper">
+        <video
+          ref={videoRef}
+          className="teacher-video"
+          playsInline
+        />
+      </div>
+
+      <div className="controls">
+        <button onClick={handleFullscreen}>⛶ Full Screen</button>
+        <button onClick={toggleRecording} className={isRecording ? "rec" : ""}>
+          {isRecording ? "⏹ Stop Recording" : "⏺ Start Recording"}
+        </button>
+      </div>
     </div>
   );
 };

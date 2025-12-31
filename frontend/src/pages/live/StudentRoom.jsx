@@ -1,11 +1,24 @@
 import React, { useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { connectSocket } from "../../socket/socket";
+import "./studentroom.css";
 
 const StudentRoom = () => {
   const { classId } = useParams();
   const videoRef = useRef(null);
   const pcRef = useRef(null);
+
+  const handleFullScreen = () => {
+    if (videoRef.current) {
+      if (videoRef.current.requestFullscreen) {
+        videoRef.current.requestFullscreen();
+      } else if (videoRef.current.webkitRequestFullscreen) { /* Safari */
+        videoRef.current.webkitRequestFullscreen();
+      } else if (videoRef.current.msRequestFullscreen) { /* IE11 */
+        videoRef.current.msRequestFullscreen();
+      }
+    }
+  };
 
   useEffect(() => {
     const socket = connectSocket();
@@ -13,8 +26,6 @@ const StudentRoom = () => {
     socket.emit("join-class", { classId });
 
     socket.on("webrtc-offer", async ({ offer, teacherSocketId }) => {
-      console.log("📥 Offer received");
-
       const pc = new RTCPeerConnection({
         iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
       });
@@ -48,7 +59,30 @@ const StudentRoom = () => {
     });
   }, [classId]);
 
-  return <video ref={videoRef} autoPlay playsInline muted className="student-video" />;
+  return (
+    <div className="student-room">
+      <div className="student-room__video-wrapper">
+        <div className="student-room__live-indicator">
+          <span className="live-dot"></span> LIVE
+        </div>
+        <video ref={videoRef} autoPlay playsInline muted className="student-room__video" />
+
+        {/* Full-width controls */}
+        <div className="student-room__controls-full">
+          <div className="controls-left">
+            <button className="control-btn">🔇 Mute</button>
+            <button className="control-btn">📷 Video</button>
+            <button className="control-btn">⏸️ Pause</button>
+            <button className="control-btn">⚙️ Settings</button>
+            <button className="control-btn" onClick={handleFullScreen}>⛶ Full Screen</button>
+          </div>
+          <div className="controls-right">
+            <button className="control-btn leave-btn">🚪 Leave Class</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default StudentRoom;

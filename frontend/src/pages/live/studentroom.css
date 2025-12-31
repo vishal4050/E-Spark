@@ -1,61 +1,112 @@
-/* ===============================
-   STUDENT ROOM (VIEWER)
-================================ */
-
+/* Full screen container */
 .student-room {
-  min-height: 100vh;
-  background: radial-gradient(circle at top, #111827, #020617);
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  background-color: #0f1218;
   padding: 20px;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Main container */
-.student-video-wrapper {
-  width: 100%;
-  max-width: 1100px;
-  background: #000;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
+/* Video wrapper with shadow and rounded corners */
+.student-room__video-wrapper {
   position: relative;
+  width: 80%;
+  max-width: 960px;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+  background-color: black;
 }
 
-/* Video player */
-.student-video {
+/* Video element */
+.student-room__video {
   width: 100%;
-  height: 600px;
-  object-fit: contain;
-  background: #000;
+  height: 100%;
+  object-fit: cover;
+  background-color: black;
 }
 
-/* Live badge */
-.student-live-badge {
+/* LIVE indicator */
+.student-room__live-indicator {
   position: absolute;
-  top: 16px;
-  left: 16px;
-  background: rgba(220, 38, 38, 0.95);
+  top: 12px;
+  left: 12px;
+  background-color: rgba(0,0,0,0.5);
+  color: #fff;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  z-index: 10;
+}
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+
+/* Full-width controls container */
+.student-room__controls-full {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+/* Left side buttons */
+.controls-left {
+  display: flex;
+  gap: 12px;
+}
+
+/* Right side buttons */
+.controls-right {
+  display: flex;
+  gap: 12px;
+}
+
+/* Individual control buttons */
+.control-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
   color: #fff;
   padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.2s;
 }
 
-/* Footer (future chat / controls) */
-.student-footer {
-  background: #020617;
-  padding: 12px;
-  text-align: center;
-  font-size: 14px;
-  color: #94a3b8;
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
-/* Mobile */
-@media (max-width: 768px) {
-  .student-video {
-    height: 320px;
-  }
+/* Leave button special style */
+.leave-btn {
+  background: #e74c3c;
+  font-weight: bold;
+}
+
+.leave-btn:hover {
+  background: #c0392b;
 }
